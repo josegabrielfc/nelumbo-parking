@@ -8,6 +8,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import nelumbo.api.parking.domain.exception.ApplicationException;
 import nelumbo.api.parking.domain.exception.ErrorCodes;
 
@@ -74,6 +75,24 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("code", ErrorCodes.MISSING_REQUEST_BODY.getCode());
         response.put("message", ErrorCodes.MISSING_REQUEST_BODY.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        boolean isPlateError = ex.getBindingResult().getFieldErrors().stream()
+                .anyMatch(error -> "plate".equals(error.getField()));
+
+        if (isPlateError) {
+            response.put("code", ErrorCodes.INVALID_PLATE.getCode());
+            response.put("message", ErrorCodes.INVALID_PLATE.getMessage());
+        } else {
+            response.put("code", "BAD_REQUEST");
+            response.put("message", "Error de validación en los campos enviados");
+        }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }

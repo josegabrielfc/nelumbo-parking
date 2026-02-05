@@ -11,12 +11,12 @@ public class ParkingMapper {
 
     public Parking toDomain(ParkingRequest request) {
         Parking parking = new Parking();
-        parking.setName(request.getName());
-        parking.setCapacity(request.getCapacity());
-        parking.setCostPerHour(request.getCostPerHour());
+        parking.setName(request.name());
+        parking.setCapacity(request.capacity());
+        parking.setCostPerHour(request.costPerHour());
 
         User socio = new User();
-        socio.setId(request.getSocioId());
+        socio.setId(request.socioId());
         parking.setSocio(socio);
 
         return parking;

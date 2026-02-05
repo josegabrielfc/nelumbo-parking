@@ -26,6 +26,11 @@ public class UserPersistenceAdapter implements UserRepositoryPort, UserSessionRe
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        return jpaUserRepository.findById(id);
+    }
+
+    @Override
     public void updateToken(String email, String token) {
         jpaUserRepository.findByEmail(email).ifPresent(user -> {
             user.setToken(token);

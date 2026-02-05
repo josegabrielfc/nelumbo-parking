@@ -44,6 +44,7 @@ public class DataInitializer implements CommandLineRunner {
         adminPermissions.add(viewVehicles);
         adminPermissions.add(sendEmails);
         adminPermissions.add(viewIndicators);
+        adminPermissions.add(viewMyParking);
         adminRole.setPermissions(adminPermissions);
         roleRepositoryPort.save(adminRole);
 

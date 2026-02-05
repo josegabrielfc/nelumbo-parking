@@ -18,4 +18,9 @@ public class RolePersistenceAdapter implements RoleRepositoryPort {
     public Optional<Role> findByName(String name) {
         return jpaRoleRepository.findByName(name);
     }
+
+    @Override
+    public Role save(Role role) {
+        return jpaRoleRepository.save(role);
+    }
 }

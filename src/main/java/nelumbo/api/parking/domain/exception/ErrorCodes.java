@@ -19,7 +19,8 @@ public enum ErrorCodes {
                         "No se puede Registrar Salida, no existe la placa en el parqueadero", 400),
         INVALID_PLATE("INVALID_PLATE",
                         "La placa del vehículo debe tener 6 caracteres alfanuméricos (sin caracteres especiales ni la letra ñ)",
-                        400);
+                        400),
+        INVALID_INDICATOR_PERIOD("INVALID_INDICATOR_PERIOD", "Periodo de indicaciones inválido", 400);
 
         private final String code;
         private final String message;

@@ -1,6 +1,8 @@
 package nelumbo.api.parking.infrastructure.adapter.in.web.filter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,11 +46,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             User user = userRepositoryPort.findByEmail(userEmail).orElse(null);
             if (user != null && jwt.equals(user.getToken()) && tokenProviderPort.validateToken(jwt)) {
 
-                java.util.List<String> authoritiesList = tokenProviderPort.getAuthoritiesFromToken(jwt);
-                java.util.List<org.springframework.security.core.GrantedAuthority> authorities = authoritiesList
+                List<String> authoritiesList = tokenProviderPort.getAuthoritiesFromToken(jwt);
+                List<org.springframework.security.core.GrantedAuthority> authorities = authoritiesList
                         .stream()
                         .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
-                        .collect(java.util.stream.Collectors.toList());
+                        .collect(Collectors.toList());
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userEmail,

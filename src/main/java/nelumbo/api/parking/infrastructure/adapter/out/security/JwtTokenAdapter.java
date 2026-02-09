@@ -1,5 +1,16 @@
 package nelumbo.api.parking.infrastructure.adapter.out.security;
 
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,15 +18,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import nelumbo.api.parking.domain.model.User;
 import nelumbo.api.parking.domain.port.out.TokenProviderPort;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 @Component
 public class JwtTokenAdapter implements TokenProviderPort {
@@ -29,7 +31,7 @@ public class JwtTokenAdapter implements TokenProviderPort {
     @Override
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
-        List<String> authorities = new java.util.ArrayList<>();
+        List<String> authorities = new ArrayList<>();
 
         // Agregar el nombre del Rol (ROLE_NOMBRE)
         authorities.add("ROLE_" + user.getRole().getName());

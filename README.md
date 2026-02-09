@@ -24,6 +24,7 @@ API REST desarrollada con Spring Boot para la gestión de parqueaderos, control 
 - ✅ **Registro de Entrada/Salida de Vehículos** con validaciones
 - ✅ **Cálculo automático de costos** basado en tiempo de permanencia
 - ✅ **Indicadores de Negocio** para Admin y Socio
+- ✅ **Notificaciones por Email** con microservicio independiente
 - ✅ **Arquitectura Hexagonal** (Ports & Adapters)
 - ✅ **Base de datos SQLite** con persistencia local
 
@@ -72,8 +73,6 @@ DB_URL=jdbc:sqlite:parking.db
 JWT_SECRET=tu_clave_secreta_super_segura_aqui_minimo_256_bits
 JWT_EXPIRATION=21600000
 ```
-
-> **Nota:** El archivo `.env` ya está en `.gitignore` para proteger tus credenciales.
 
 ### 3. Verificar Dependencias
 
@@ -207,6 +206,36 @@ POST /api/auth/login
 
 ---
 
+### 📧 Notificaciones por Email
+
+| Método | Endpoint          | Descripción                                                | Rol   |
+| ------ | ----------------- | ---------------------------------------------------------- | ----- |
+| POST   | `/api/email/send` | Enviar correo (valida que la placa esté en el parqueadero) | ADMIN |
+
+**Ejemplo de Request:**
+
+```json
+POST /api/email/send
+{
+  "email": "cliente@example.com",
+  "placa": "ABC123",
+  "mensaje": "Su vehículo ha sido registrado exitosamente",
+  "parqueaderoId": 1
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "mensaje": "Correo Enviado"
+}
+```
+
+> **Nota:** Este endpoint valida que la placa especificada se encuentre actualmente en el parqueadero indicado. Si no se encuentra, retorna un error 404.
+
+---
+
 ### 📊 Indicadores
 
 #### Para ADMIN:
@@ -247,7 +276,7 @@ Al iniciar la aplicación por primera vez, se crea automáticamente un usuario a
 | ---------------- | ----------------------------------- | ------------------------ |
 | `DB_URL`         | URL de conexión a SQLite            | `jdbc:sqlite:parking.db` |
 | `JWT_SECRET`     | Clave secreta para firmar JWT       | (Requerido)              |
-| `JWT_EXPIRATION` | Tiempo de expiración del token (ms) | `86400000` (24h)         |
+| `JWT_EXPIRATION` | Tiempo de expiración del token (ms) | `21600000` (6h)          |
 
 ---
 

@@ -1,9 +1,12 @@
 package nelumbo.api.parking.infrastructure.adapter.out.persistence.converter;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Converter(autoApply = true)
 public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, String> {
@@ -23,8 +26,8 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
         try {
             if (s.matches("^\\d+$")) {
                 long timestamp = Long.parseLong(s);
-                return LocalDateTime.ofInstant(java.time.Instant.ofEpochMilli(timestamp),
-                        java.time.ZoneId.systemDefault());
+                return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp),
+                        ZoneId.systemDefault());
             }
             return LocalDateTime.parse(s, FORMATTER);
         } catch (Exception e) {

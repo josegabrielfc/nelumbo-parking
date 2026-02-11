@@ -3,17 +3,18 @@ package nelumbo.api.parking.application.service;
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.Role;
 import nelumbo.api.parking.domain.model.User;
-import nelumbo.api.parking.domain.port.in.CreateUserUseCase;
+import nelumbo.api.parking.domain.port.in.UserUseCase;
 import nelumbo.api.parking.domain.port.out.PasswordEncoderPort;
 import nelumbo.api.parking.domain.port.out.RoleRepositoryPort;
 import nelumbo.api.parking.domain.port.out.UserRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserManagementService implements CreateUserUseCase {
+public class UserManagementService implements UserUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;
@@ -33,5 +34,21 @@ public class UserManagementService implements CreateUserUseCase {
         newUser.setCreatedAt(LocalDateTime.now());
 
         return userRepositoryPort.save(newUser);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepositoryPort.findAll();
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepositoryPort.findById(id)
+                .orElseThrow(() -> new RuntimeException("El usuario con ID " + id + " no existe"));
+    }
+
+    @Override
+    public List<User> findByRole(Long roleId) {
+        return userRepositoryPort.findByRole(roleId);
     }
 }

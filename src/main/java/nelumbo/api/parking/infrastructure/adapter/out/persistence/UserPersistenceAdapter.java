@@ -7,6 +7,7 @@ import nelumbo.api.parking.domain.port.out.UserSessionRepositoryPort;
 import nelumbo.api.parking.infrastructure.adapter.out.persistence.repository.JpaUserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -28,6 +29,16 @@ public class UserPersistenceAdapter implements UserRepositoryPort, UserSessionRe
     @Override
     public Optional<User> findById(Long id) {
         return jpaUserRepository.findById(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return jpaUserRepository.findAll();
+    }
+
+    @Override
+    public List<User> findByRole(Long roleId) {
+        return jpaUserRepository.findByRoleId(roleId);
     }
 
     @Override

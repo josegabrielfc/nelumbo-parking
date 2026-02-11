@@ -1,10 +1,12 @@
 package nelumbo.api.parking.infrastructure.adapter.in.web.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -31,31 +33,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        userEmail = tokenProviderPort.getEmailFromToken(jwt);
+        final String jwt = authHeader.substring(7);
+        final String userIdStr = tokenProviderPort.getSubjectFromToken(jwt);
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepositoryPort.findByEmail(userEmail).orElse(null);
+        if (userIdStr != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            Long userId = Long.parseLong(userIdStr);
+            User user = userRepositoryPort.findById(userId).orElse(null);
             if (user != null && jwt.equals(user.getToken()) && tokenProviderPort.validateToken(jwt)) {
 
-                List<String> authoritiesList = tokenProviderPort.getAuthoritiesFromToken(jwt);
-                List<org.springframework.security.core.GrantedAuthority> authorities = authoritiesList
-                        .stream()
-                        .map(org.springframework.security.core.authority.SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                // Agregar Rol
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userEmail,
-                        null,
-                        authorities);
+                // Agregar Permisos
+                if (user.getRole().getPermissions() != null) {
+                    user.getRole().getPermissions()
+                            .forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
+                }
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getEmail(),
+                        null, authorities);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

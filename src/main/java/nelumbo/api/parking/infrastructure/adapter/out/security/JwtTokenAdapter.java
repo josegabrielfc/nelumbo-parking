@@ -1,11 +1,7 @@
 package nelumbo.api.parking.infrastructure.adapter.out.security;
 
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,23 +26,8 @@ public class JwtTokenAdapter implements TokenProviderPort {
 
     @Override
     public String generateToken(User user) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        List<String> authorities = new ArrayList<>();
-
-        // Agregar el nombre del Rol (ROLE_NOMBRE)
-        authorities.add("ROLE_" + user.getRole().getName());
-
-        // Agregar los permisos individuales
-        if (user.getRole().getPermissions() != null) {
-            user.getRole().getPermissions().forEach(permission -> authorities.add(permission.getName()));
-        }
-
-        extraClaims.put("authorities", authorities);
-        extraClaims.put("name", user.getName());
-
         return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(user.getEmail())
+                .setSubject(user.getId().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -54,15 +35,8 @@ public class JwtTokenAdapter implements TokenProviderPort {
     }
 
     @Override
-    public String getEmailFromToken(String token) {
+    public String getSubjectFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<String> getAuthoritiesFromToken(String token) {
-        Claims claims = extractAllClaims(token);
-        return (List<String>) claims.get("authorities");
     }
 
     @Override

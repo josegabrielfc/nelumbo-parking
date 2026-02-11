@@ -23,7 +23,8 @@ public enum ErrorCodes {
         INVALID_INDICATOR_PERIOD("INVALID_INDICATOR_PERIOD", "Periodo de indicaciones inválido", 400),
         EMAIL_SERVICE_ERROR("EMAIL_SERVICE_ERROR", "Error al comunicarse con el servicio de correo", 500),
         VEHICLE_NOT_IN_PARKING("VEHICLE_NOT_IN_PARKING",
-                        "El vehículo con la placa especificada no se encuentra en el parqueadero", 404);
+                        "El vehículo con la placa especificada no se encuentra en el parqueadero", 404),
+        MISSING_SOCIO_ID("MISSING_SOCIO_ID", "Se debe proporcionar el ID del socio", 400);
 
         private final String code;
         private final String message;

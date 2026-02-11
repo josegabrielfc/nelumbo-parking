@@ -1,4 +1,9 @@
 package nelumbo.api.parking.domain.model.indicator;
 
-public record ParkingFrequency(Long parkingId, String parkingName, Long vehicleCount) {
+public interface ParkingFrequency {
+    Long getParkingId();
+
+    String getParkingName();
+
+    Long getVehicleCount();
 }

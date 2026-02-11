@@ -1,4 +1,9 @@
 package nelumbo.api.parking.domain.model.indicator;
 
-public record SocioEarnings(Long socioId, String socioName, Double totalEarnings) {
+public interface SocioEarnings {
+    Long getSocioId();
+
+    String getSocioName();
+
+    Double getTotalEarnings();
 }

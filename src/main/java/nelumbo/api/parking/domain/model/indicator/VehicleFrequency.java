@@ -1,4 +1,7 @@
 package nelumbo.api.parking.domain.model.indicator;
 
-public record VehicleFrequency(String plate, Long frequency) {
+public interface VehicleFrequency {
+    String getPlate();
+
+    Long getFrequency();
 }

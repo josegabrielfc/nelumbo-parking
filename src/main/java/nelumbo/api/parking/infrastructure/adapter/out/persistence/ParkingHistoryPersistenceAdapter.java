@@ -2,13 +2,11 @@ package nelumbo.api.parking.infrastructure.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.ParkingHistory;
-import nelumbo.api.parking.domain.model.indicator.ParkingFrequency;
-import nelumbo.api.parking.domain.model.indicator.SocioEarnings;
-import nelumbo.api.parking.domain.model.indicator.VehicleFrequency;
-import nelumbo.api.parking.domain.model.indicator.SocioEntries;
-import nelumbo.api.parking.domain.model.indicator.ParkingEarnings;
+import nelumbo.api.parking.domain.model.indicator.*;
 import nelumbo.api.parking.domain.port.out.ParkingHistoryRepositoryPort;
+import nelumbo.api.parking.infrastructure.adapter.out.persistence.mapper.ParkingHistoryPersistenceMapper;
 import nelumbo.api.parking.infrastructure.adapter.out.persistence.repository.JpaParkingHistoryRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -19,10 +17,11 @@ import java.util.List;
 public class ParkingHistoryPersistenceAdapter implements ParkingHistoryRepositoryPort {
 
     private final JpaParkingHistoryRepository jpaParkingHistoryRepository;
+    private final ParkingHistoryPersistenceMapper mapper;
 
     @Override
     public ParkingHistory save(ParkingHistory history) {
-        return jpaParkingHistoryRepository.save(history);
+        return mapper.toDomain(jpaParkingHistoryRepository.save(mapper.toEntity(history)));
     }
 
     @Override
@@ -32,27 +31,27 @@ public class ParkingHistoryPersistenceAdapter implements ParkingHistoryRepositor
 
     @Override
     public List<VehicleFrequency> findTop10FrequentVehicles() {
-        return jpaParkingHistoryRepository.findTop10FrequentVehicles();
+        return jpaParkingHistoryRepository.findTopFrequentVehicles(PageRequest.of(0, 10));
     }
 
     @Override
     public List<SocioEarnings> findTop3SociosByEarnings() {
-        return jpaParkingHistoryRepository.findTop3SociosByEarnings();
+        return jpaParkingHistoryRepository.findTopSociosByEarnings(PageRequest.of(0, 3));
     }
 
     @Override
     public List<ParkingFrequency> findTop10FrequentParkings() {
-        return jpaParkingHistoryRepository.findTop10FrequentParkings();
+        return jpaParkingHistoryRepository.findTopFrequentParkings(PageRequest.of(0, 10));
     }
 
     @Override
     public List<SocioEntries> findTop3SociosByEntriesBetween(LocalDateTime start, LocalDateTime end) {
-        return jpaParkingHistoryRepository.findTop3SociosByEntriesBetween(start, end);
+        return jpaParkingHistoryRepository.findTopSociosByEntriesBetween(start, end, PageRequest.of(0, 3));
     }
 
     @Override
     public List<ParkingEarnings> findTop3ParkingsByEarningsBetween(LocalDateTime start, LocalDateTime end) {
-        return jpaParkingHistoryRepository.findTop3ParkingsByEarningsBetween(start, end);
+        return jpaParkingHistoryRepository.findTopParkingsByEarningsBetween(start, end, PageRequest.of(0, 3));
     }
 
     @Override

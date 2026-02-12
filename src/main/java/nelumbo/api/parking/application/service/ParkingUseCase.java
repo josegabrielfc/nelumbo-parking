@@ -3,7 +3,7 @@ package nelumbo.api.parking.application.service;
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.Parking;
 import nelumbo.api.parking.domain.model.User;
-import nelumbo.api.parking.domain.port.in.ParkingUseCase;
+import nelumbo.api.parking.domain.port.in.ParkingService;
 import nelumbo.api.parking.domain.port.out.ParkingRepositoryPort;
 import nelumbo.api.parking.domain.port.out.UserRepositoryPort;
 import nelumbo.api.parking.domain.exception.ApplicationException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ParkingService implements ParkingUseCase {
+public class ParkingUseCase implements ParkingService {
 
     private final ParkingRepositoryPort parkingRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
@@ -57,8 +57,27 @@ public class ParkingService implements ParkingUseCase {
     }
 
     @Override
-    public List<Parking> findBySocioId(Long socioId) {
-        return parkingRepositoryPort.findBySocioId(socioId);
+    public List<Parking> findBySocioId(Long socioId, User requester) {
+        Long targetSocioId = resolveSocioId(socioId, requester);
+        return parkingRepositoryPort.findBySocioId(targetSocioId);
+    }
+
+    private Long resolveSocioId(Long requestedId, User requester) {
+        boolean isAdmin = "ADMIN".equals(requester.getRole().getName());
+
+        if (isAdmin) {
+            if (requestedId == null) {
+                throw new ApplicationException(ErrorCodes.MISSING_SOCIO_ID);
+            }
+            return requestedId;
+        }
+
+        // ES SOCIO
+        if (requestedId != null) {
+            throw new ApplicationException(ErrorCodes.ACCESS_DENIED);
+        }
+
+        return requester.getId();
     }
 
     private User validateSocio(Long socioId) {

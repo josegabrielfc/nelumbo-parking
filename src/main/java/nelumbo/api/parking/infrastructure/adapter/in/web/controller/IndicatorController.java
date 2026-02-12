@@ -2,7 +2,7 @@ package nelumbo.api.parking.infrastructure.adapter.in.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.indicator.*;
-import nelumbo.api.parking.domain.port.in.IndicatorUseCase;
+import nelumbo.api.parking.domain.port.in.IndicatorService;
 import nelumbo.api.parking.infrastructure.adapter.in.web.dto.ActiveVehicleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,42 +18,42 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class IndicatorController {
 
-    private final IndicatorUseCase indicatorUseCase;
+    private final IndicatorService indicatorService;
 
     @GetMapping("/admin/top-vehicles")
     @PreAuthorize("hasAuthority('VIEW_INDICATORS')")
     public ResponseEntity<List<VehicleFrequency>> getTopVehicles() {
-        return ResponseEntity.ok(indicatorUseCase.getTop10FrequentVehicles());
+        return ResponseEntity.ok(indicatorService.getTop10FrequentVehicles());
     }
 
     @GetMapping("/admin/top-socios")
     @PreAuthorize("hasAuthority('VIEW_INDICATORS')")
     public ResponseEntity<List<SocioEarnings>> getTopSocios() {
-        return ResponseEntity.ok(indicatorUseCase.getTop3SociosByEarnings());
+        return ResponseEntity.ok(indicatorService.getTop3SociosByEarnings());
     }
 
     @GetMapping("/admin/top-parkings")
     @PreAuthorize("hasAuthority('VIEW_INDICATORS')")
     public ResponseEntity<List<ParkingFrequency>> getTopParkings() {
-        return ResponseEntity.ok(indicatorUseCase.getTop10FrequentParkings());
+        return ResponseEntity.ok(indicatorService.getTop10FrequentParkings());
     }
 
     @GetMapping("/admin/weekly-top-socios")
     @PreAuthorize("hasAuthority('VIEW_INDICATORS')")
     public ResponseEntity<List<SocioEntries>> getWeeklyTopSocios() {
-        return ResponseEntity.ok(indicatorUseCase.getTop3SociosByWeeklyEntries());
+        return ResponseEntity.ok(indicatorService.getTop3SociosByWeeklyEntries());
     }
 
     @GetMapping("/admin/weekly-top-parkings")
     @PreAuthorize("hasAuthority('VIEW_INDICATORS')")
     public ResponseEntity<List<ParkingEarnings>> getWeeklyTopParkings() {
-        return ResponseEntity.ok(indicatorUseCase.getTop3ParkingsByWeeklyEarnings());
+        return ResponseEntity.ok(indicatorService.getTop3ParkingsByWeeklyEarnings());
     }
 
     @GetMapping("/socio/first-timers/{parkingId}")
     @PreAuthorize("hasAuthority('VIEW_INDICATORS')")
     public ResponseEntity<List<ActiveVehicleResponse>> getFirstTimeVehicles(@PathVariable Long parkingId) {
-        return ResponseEntity.ok(indicatorUseCase.getFirstTimeVehicles(parkingId).stream()
+        return ResponseEntity.ok(indicatorService.getFirstTimeVehicles(parkingId).stream()
                 .map(v -> new ActiveVehicleResponse(
                         v.getId(),
                         v.getPlate(),
@@ -68,7 +68,7 @@ public class IndicatorController {
             @PathVariable Long socioId,
             @RequestParam(defaultValue = "today") String period) {
 
-        Double earnings = indicatorUseCase.getSocioEarnings(socioId, period);
+        Double earnings = indicatorService.getSocioEarnings(socioId, period);
 
         Map<String, Object> response = new HashMap<>();
         response.put("socioId", socioId);
@@ -84,7 +84,7 @@ public class IndicatorController {
             @PathVariable Long parkingId,
             @RequestParam(defaultValue = "today") String period) {
 
-        Double earnings = indicatorUseCase.getParkingEarnings(parkingId, period);
+        Double earnings = indicatorService.getParkingEarnings(parkingId, period);
 
         Map<String, Object> response = new HashMap<>();
         response.put("parkingId", parkingId);

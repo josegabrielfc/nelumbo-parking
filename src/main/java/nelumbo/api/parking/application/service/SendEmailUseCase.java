@@ -5,7 +5,7 @@ import nelumbo.api.parking.domain.exception.ApplicationException;
 import nelumbo.api.parking.domain.exception.ErrorCodes;
 import nelumbo.api.parking.domain.model.Parking;
 import nelumbo.api.parking.domain.model.VehicleRecord;
-import nelumbo.api.parking.domain.port.in.SendEmailUseCase;
+import nelumbo.api.parking.domain.port.in.SendEmailService;
 import nelumbo.api.parking.domain.port.out.EmailServicePort;
 import nelumbo.api.parking.domain.port.out.ParkingRepositoryPort;
 import nelumbo.api.parking.domain.port.out.VehicleRecordRepositoryPort;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class SendEmailService implements SendEmailUseCase {
+public class SendEmailUseCase implements SendEmailService {
     private final EmailServicePort emailServicePort;
     private final ParkingRepositoryPort parkingRepositoryPort;
     private final VehicleRecordRepositoryPort vehicleRecordRepositoryPort;

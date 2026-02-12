@@ -3,7 +3,7 @@ package nelumbo.api.parking.infrastructure.adapter.in.web.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.User;
-import nelumbo.api.parking.domain.port.in.UserUseCase;
+import nelumbo.api.parking.domain.port.in.UserService;
 import nelumbo.api.parking.infrastructure.adapter.in.web.dto.UserRequest;
 import nelumbo.api.parking.infrastructure.adapter.in.web.dto.UserResponse;
 import nelumbo.api.parking.infrastructure.adapter.in.web.mapper.UserRequestMapper;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserUseCase userUseCase;
+    private final UserService userService;
     private final UserRequestMapper userRequestMapper;
     private final UserResponseMapper userResponseMapper;
 
@@ -34,14 +34,14 @@ public class UserController {
     @PreAuthorize("hasAuthority('CREATE_SOCIO')")
     public ResponseEntity<UserResponse> createSocio(@Valid @RequestBody UserRequest userRequest) {
         User newUser = userRequestMapper.toDomain(userRequest);
-        User createdUser = userUseCase.createSocio(newUser);
+        User createdUser = userService.createSocio(newUser);
         return new ResponseEntity<>(userResponseMapper.toResponse(createdUser), HttpStatus.CREATED);
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> users = userUseCase.findAll()
+        List<UserResponse> users = userService.findAll()
                 .stream()
                 .map(userResponseMapper::toResponse)
                 .collect(Collectors.toList());
@@ -51,14 +51,14 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
-        User user = userUseCase.findById(id);
+        User user = userService.findById(id);
         return ResponseEntity.ok(userResponseMapper.toResponse(user));
     }
 
     @GetMapping("/role/{roleId}")
     @PreAuthorize("hasAuthority('VIEW_USERS')")
     public ResponseEntity<List<UserResponse>> getUsersByRole(@PathVariable Long roleId) {
-        List<UserResponse> users = userUseCase.findByRole(roleId)
+        List<UserResponse> users = userService.findByRole(roleId)
                 .stream()
                 .map(userResponseMapper::toResponse)
                 .collect(Collectors.toList());

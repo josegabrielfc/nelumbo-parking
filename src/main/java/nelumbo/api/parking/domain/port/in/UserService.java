@@ -4,7 +4,7 @@ import java.util.List;
 
 import nelumbo.api.parking.domain.model.User;
 
-public interface UserUseCase {
+public interface UserService {
 
     List<User> findAll();
 

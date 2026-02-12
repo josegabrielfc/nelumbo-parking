@@ -2,7 +2,7 @@ package nelumbo.api.parking.application.service;
 
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.User;
-import nelumbo.api.parking.domain.port.in.AuthUseCase;
+import nelumbo.api.parking.domain.port.in.AuthService;
 import nelumbo.api.parking.domain.port.out.TokenProviderPort;
 import nelumbo.api.parking.domain.port.out.UserRepositoryPort;
 import nelumbo.api.parking.domain.port.out.UserSessionRepositoryPort;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService implements AuthUseCase {
+public class AuthUseCase implements AuthService {
 
     private final UserRepositoryPort userRepositoryPort;
     private final TokenProviderPort tokenProviderPort;

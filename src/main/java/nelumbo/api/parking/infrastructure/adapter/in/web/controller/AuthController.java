@@ -2,7 +2,7 @@ package nelumbo.api.parking.infrastructure.adapter.in.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import nelumbo.api.parking.domain.port.in.AuthUseCase;
+import nelumbo.api.parking.domain.port.in.AuthService;
 import nelumbo.api.parking.infrastructure.adapter.in.web.dto.AuthResponse;
 import nelumbo.api.parking.infrastructure.adapter.in.web.dto.LoginRequest;
 import java.util.Map;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthUseCase authUseCase;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(authUseCase.login(loginRequest));
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout(Authentication authentication) {
-        authUseCase.logout(authentication.getName());
+        authService.logout(authentication.getName());
         return ResponseEntity.ok(Map.of("message", "Logout successful"));
     }
 }

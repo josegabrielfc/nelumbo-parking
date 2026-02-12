@@ -5,7 +5,7 @@ import nelumbo.api.parking.domain.model.indicator.*;
 
 import java.util.List;
 
-public interface IndicatorUseCase {
+public interface IndicatorService {
     // Admin
     List<VehicleFrequency> getTop10FrequentVehicles();
 

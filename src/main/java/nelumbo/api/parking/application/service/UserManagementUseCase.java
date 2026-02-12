@@ -3,7 +3,7 @@ package nelumbo.api.parking.application.service;
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.model.Role;
 import nelumbo.api.parking.domain.model.User;
-import nelumbo.api.parking.domain.port.in.UserUseCase;
+import nelumbo.api.parking.domain.port.in.UserService;
 import nelumbo.api.parking.domain.port.out.PasswordEncoderPort;
 import nelumbo.api.parking.domain.port.out.RoleRepositoryPort;
 import nelumbo.api.parking.domain.port.out.UserRepositoryPort;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserManagementService implements UserUseCase {
+public class UserManagementUseCase implements UserService {
 
     private final UserRepositoryPort userRepositoryPort;
     private final RoleRepositoryPort roleRepositoryPort;

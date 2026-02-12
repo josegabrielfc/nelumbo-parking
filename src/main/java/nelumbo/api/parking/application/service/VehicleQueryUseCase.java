@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.exception.ApplicationException;
 import nelumbo.api.parking.domain.exception.ErrorCodes;
 import nelumbo.api.parking.domain.model.VehicleRecord;
-import nelumbo.api.parking.domain.port.in.VehicleQueryUseCase;
+import nelumbo.api.parking.domain.port.in.VehicleQueryService;
 import nelumbo.api.parking.domain.port.out.ParkingRepositoryPort;
 import nelumbo.api.parking.domain.port.out.VehicleRecordRepositoryPort;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class VehicleQueryService implements VehicleQueryUseCase {
+public class VehicleQueryUseCase implements VehicleQueryService {
 
     private final VehicleRecordRepositoryPort vehicleRecordRepositoryPort;
     private final ParkingRepositoryPort parkingRepositoryPort;

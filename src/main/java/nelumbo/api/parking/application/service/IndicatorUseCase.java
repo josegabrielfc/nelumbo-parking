@@ -5,7 +5,7 @@ import nelumbo.api.parking.domain.exception.ApplicationException;
 import nelumbo.api.parking.domain.exception.ErrorCodes;
 import nelumbo.api.parking.domain.model.VehicleRecord;
 import nelumbo.api.parking.domain.model.indicator.*;
-import nelumbo.api.parking.domain.port.in.IndicatorUseCase;
+import nelumbo.api.parking.domain.port.in.IndicatorService;
 import nelumbo.api.parking.domain.port.out.ParkingHistoryRepositoryPort;
 import nelumbo.api.parking.domain.port.out.VehicleRecordRepositoryPort;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class IndicatorService implements IndicatorUseCase {
+public class IndicatorUseCase implements IndicatorService {
 
     private final ParkingHistoryRepositoryPort parkingHistoryRepositoryPort;
     private final VehicleRecordRepositoryPort vehicleRecordRepositoryPort;

@@ -4,6 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCodes {
+        BAD_REQUEST("BAD_REQUEST", "La solicitud es inválida", 400),
+        INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "Ocurrió un error inesperado en el servidor", 500),
+        INVALID_URL("INVALID_URL", "La URL solicitada no existe en este servidor", 404),
         INVALID_TOKEN("INVALID_TOKEN", "El token es inválido, ha expirado o no fue proporcionado", 401),
         WRONG_CREDENTIALS("WRONG_CREDENTIALS", "Credenciales inválidas", 400),
         MISSING_REQUEST_BODY("MISSING_REQUEST_BODY", "El cuerpo de la solicitud no es válido o está vacío", 400),

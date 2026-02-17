@@ -1,4 +1,4 @@
-package nelumbo.api.parking.application.service;
+package nelumbo.api.parking.application.usecase;
 
 import nelumbo.api.parking.domain.exception.ApplicationException;
 import nelumbo.api.parking.domain.exception.ErrorCodes;

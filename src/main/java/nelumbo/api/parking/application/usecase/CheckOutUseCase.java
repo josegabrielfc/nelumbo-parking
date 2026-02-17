@@ -1,4 +1,4 @@
-package nelumbo.api.parking.application.service;
+package nelumbo.api.parking.application.usecase;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

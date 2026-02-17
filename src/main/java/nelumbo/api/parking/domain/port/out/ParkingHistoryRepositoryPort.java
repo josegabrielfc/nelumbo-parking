@@ -30,4 +30,6 @@ public interface ParkingHistoryRepositoryPort {
     Double sumEarningsBySocioIdAndPeriod(Long socioId, LocalDateTime start, LocalDateTime end);
 
     Double sumEarningsByParkingIdAndPeriod(Long parkingId, LocalDateTime start, LocalDateTime end);
+
+    void deleteByParkingId(Long parkingId);
 }

@@ -18,7 +18,8 @@ public class VehicleRecordPersistenceMapper {
                 entity.getId(),
                 entity.getPlate(),
                 entity.getEntryDate(),
-                parkingMapper.toDomain(entity.getParking()));
+                parkingMapper.toDomain(entity.getParking()),
+                entity.getDeletedAt());
     }
 
     public VehicleRecordEntity toEntity(VehicleRecord domain) {
@@ -28,6 +29,7 @@ public class VehicleRecordPersistenceMapper {
                 domain.getId(),
                 domain.getPlate(),
                 domain.getEntryDate(),
-                parkingMapper.toEntity(domain.getParking()));
+                parkingMapper.toEntity(domain.getParking()),
+                domain.getDeletedAt());
     }
 }

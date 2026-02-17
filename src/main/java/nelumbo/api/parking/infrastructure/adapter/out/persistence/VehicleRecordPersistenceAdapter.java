@@ -7,6 +7,8 @@ import nelumbo.api.parking.infrastructure.adapter.out.persistence.mapper.Vehicle
 import nelumbo.api.parking.infrastructure.adapter.out.persistence.repository.JpaVehicleRecordRepository;
 import org.springframework.stereotype.Component;
 
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,5 +55,18 @@ public class VehicleRecordPersistenceAdapter implements VehicleRecordRepositoryP
     @Override
     public boolean existsByPlate(String plate) {
         return jpaVehicleRecordRepository.existsByPlate(plate);
+    }
+
+    @Override
+    public List<VehicleRecord> findAll() {
+        return jpaVehicleRecordRepository.findAll().stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void deleteByParkingId(Long parkingId) {
+        jpaVehicleRecordRepository.deleteByParkingId(parkingId);
     }
 }

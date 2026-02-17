@@ -8,6 +8,7 @@ import nelumbo.api.parking.domain.model.indicator.SocioEntries;
 import nelumbo.api.parking.domain.model.indicator.ParkingEarnings;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -63,4 +64,8 @@ public interface JpaParkingHistoryRepository extends JpaRepository<ParkingHistor
                         @Param("end") LocalDateTime end, Pageable pageable);
 
         boolean existsByPlateAndParkingId(String plate, Long parkingId);
+
+        @Modifying
+        @Query(value = "UPDATE parking_history SET deleted_at = CURRENT_TIMESTAMP WHERE parking_id = :parkingId", nativeQuery = true)
+        void deleteByParkingId(@Param("parkingId") Long parkingId);
 }

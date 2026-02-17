@@ -15,4 +15,5 @@ public class ParkingHistory {
     private LocalDateTime exitDate;
     private Double totalCost;
     private Parking parking;
+    private LocalDateTime deletedAt;
 }

@@ -8,7 +8,10 @@ import nelumbo.api.parking.domain.port.out.ParkingRepositoryPort;
 import nelumbo.api.parking.domain.port.out.UserRepositoryPort;
 import nelumbo.api.parking.domain.exception.ApplicationException;
 import nelumbo.api.parking.domain.exception.ErrorCodes;
+import nelumbo.api.parking.domain.port.out.ParkingHistoryRepositoryPort;
+import nelumbo.api.parking.domain.port.out.VehicleRecordRepositoryPort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class ParkingUseCase implements ParkingService {
 
     private final ParkingRepositoryPort parkingRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
+    private final VehicleRecordRepositoryPort vehicleRecordRepositoryPort;
+    private final ParkingHistoryRepositoryPort parkingHistoryRepositoryPort;
 
     @Override
     public Parking create(Parking parking) {
@@ -40,8 +45,16 @@ public class ParkingUseCase implements ParkingService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         findById(id); // Validar que existe
+
+        long activeVehicles = vehicleRecordRepositoryPort.countByParkingId(id);
+        if (activeVehicles > 0) {
+            throw new ApplicationException(ErrorCodes.PARKING_HAS_VEHICLES);
+        }
+
+        parkingHistoryRepositoryPort.deleteByParkingId(id);
         parkingRepositoryPort.deleteById(id);
     }
 

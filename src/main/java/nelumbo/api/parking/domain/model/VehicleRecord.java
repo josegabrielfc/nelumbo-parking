@@ -13,4 +13,5 @@ public class VehicleRecord {
     private String plate;
     private LocalDateTime entryDate;
     private Parking parking;
+    private LocalDateTime deletedAt;
 }

@@ -9,6 +9,8 @@ import nelumbo.api.parking.infrastructure.adapter.out.persistence.repository.Jpa
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,5 +66,11 @@ public class ParkingHistoryPersistenceAdapter implements ParkingHistoryRepositor
     public Double sumEarningsByParkingIdAndPeriod(Long parkingId, LocalDateTime start, LocalDateTime end) {
         Double sum = jpaParkingHistoryRepository.sumEarningsByParkingIdAndPeriod(parkingId, start, end);
         return sum != null ? sum : 0.0;
+    }
+
+    @Override
+    @Transactional
+    public void deleteByParkingId(Long parkingId) {
+        jpaParkingHistoryRepository.deleteByParkingId(parkingId);
     }
 }

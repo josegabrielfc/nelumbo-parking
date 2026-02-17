@@ -18,4 +18,8 @@ public interface VehicleRecordRepositoryPort {
     void deleteById(Long id);
 
     boolean existsByPlate(String plate);
+
+    List<VehicleRecord> findAll();
+
+    void deleteByParkingId(Long parkingId);
 }

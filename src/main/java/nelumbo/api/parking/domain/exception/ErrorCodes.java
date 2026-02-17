@@ -29,7 +29,10 @@ public enum ErrorCodes {
                         "El vehículo con la placa especificada no se encuentra en el parqueadero", 404),
         MISSING_SOCIO_ID("MISSING_SOCIO_ID", "Se debe proporcionar el ID del socio", 400),
         PARKING_NOT_OWNED("PARKING_NOT_OWNED", "No se puede realizar la acción, el parqueadero no pertenece al socio",
-                        403);
+                        403),
+        PARKING_HAS_VEHICLES("PARKING_HAS_VEHICLES",
+                        "No se puede eliminar el parqueadero porque tiene vehículos activos",
+                        400);
 
         private final String code;
         private final String message;

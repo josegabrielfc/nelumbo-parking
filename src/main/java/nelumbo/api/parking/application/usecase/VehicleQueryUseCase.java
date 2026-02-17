@@ -25,4 +25,9 @@ public class VehicleQueryUseCase implements VehicleQueryService {
 
         return vehicleRecordRepositoryPort.findByParkingId(parkingId);
     }
+
+    @Override
+    public List<VehicleRecord> findAllActiveVehicles() {
+        return vehicleRecordRepositoryPort.findAll();
+    }
 }

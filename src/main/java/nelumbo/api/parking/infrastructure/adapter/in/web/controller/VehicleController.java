@@ -3,6 +3,8 @@ package nelumbo.api.parking.infrastructure.adapter.in.web.controller;
 import lombok.RequiredArgsConstructor;
 import nelumbo.api.parking.domain.port.in.VehicleQueryService;
 import nelumbo.api.parking.infrastructure.adapter.in.web.dto.ActiveVehicleResponse;
+import nelumbo.api.parking.infrastructure.adapter.in.web.dto.VehicleRecordDetailResponse;
+import nelumbo.api.parking.infrastructure.adapter.in.web.mapper.VehicleRecordMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class VehicleController {
 
     private final VehicleQueryService vehicleQueryService;
+    private final VehicleRecordMapper vehicleRecordMapper;
 
     @GetMapping("/active/{parkingId}")
     @PreAuthorize("hasAuthority('VIEW_VEHICLES')")
@@ -29,6 +32,14 @@ public class VehicleController {
                         record.getPlate(),
                         record.getEntryDate(),
                         record.getParking().getName()))
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/detail")
+    @PreAuthorize("hasAuthority('VIEW_RECORD')")
+    public ResponseEntity<List<VehicleRecordDetailResponse>> getAllVehiclesDetail() {
+        return ResponseEntity.ok(vehicleQueryService.findAllActiveVehicles().stream()
+                .map(vehicleRecordMapper::toDetailResponse)
                 .collect(Collectors.toList()));
     }
 }

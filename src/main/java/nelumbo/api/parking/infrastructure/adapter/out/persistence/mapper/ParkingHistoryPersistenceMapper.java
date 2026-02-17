@@ -20,7 +20,8 @@ public class ParkingHistoryPersistenceMapper {
                 entity.getEntryDate(),
                 entity.getExitDate(),
                 entity.getTotalCost(),
-                parkingMapper.toDomain(entity.getParking()));
+                parkingMapper.toDomain(entity.getParking()),
+                entity.getDeletedAt());
     }
 
     public ParkingHistoryEntity toEntity(ParkingHistory domain) {
@@ -32,6 +33,7 @@ public class ParkingHistoryPersistenceMapper {
                 domain.getEntryDate(),
                 domain.getExitDate(),
                 domain.getTotalCost(),
-                parkingMapper.toEntity(domain.getParking()));
+                parkingMapper.toEntity(domain.getParking()),
+                domain.getDeletedAt());
     }
 }

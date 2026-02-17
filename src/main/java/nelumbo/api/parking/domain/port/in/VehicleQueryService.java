@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface VehicleQueryService {
     List<VehicleRecord> findActiveVehiclesByParking(Long parkingId);
+
+    List<VehicleRecord> findAllActiveVehicles();
 }

@@ -19,7 +19,8 @@ public class ParkingPersistenceMapper {
                 entity.getName(),
                 entity.getCapacity(),
                 entity.getCostPerHour(),
-                userMapper.toDomain(entity.getSocio()));
+                userMapper.toDomain(entity.getSocio()),
+                entity.getDeletedAt());
     }
 
     public ParkingEntity toEntity(Parking domain) {
@@ -30,6 +31,7 @@ public class ParkingPersistenceMapper {
                 domain.getName(),
                 domain.getCapacity(),
                 domain.getCostPerHour(),
-                userMapper.toEntity(domain.getSocio()));
+                userMapper.toEntity(domain.getSocio()),
+                domain.getDeletedAt());
     }
 }
